@@ -1,0 +1,2 @@
+model_checkpoint_path: "ner_bert_weights"
+all_model_checkpoint_paths: "ner_bert_weights"

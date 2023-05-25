@@ -75,8 +75,8 @@ if __name__ == "__main__":
     pass
     # _ids = [40, 69, 74, 143, 280, 297, 298, 361, 380, 426, 512, 665, 721]
     # parse_many(_ids, commit=True)
-    # _id = 721
-    # parse_one(_id, write=True)
+    _id = 721
+    parse_one(_id, write=True)
     # parse_from_file(f"{_id}.html")
     # parse_all()
     # write_log()

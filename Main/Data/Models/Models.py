@@ -1,12 +1,16 @@
 from sqlalchemy import String, DateTime, Column, Integer
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase
+# from sqlalchemy.ext.declarative import declarative_base
 
 from datetime import datetime
 
-from .DBClient import get_engine
+try: 
+    from DBClient import get_engine
+except:
+    from .DBClient import get_engine
 
-
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 
 class ArticleHeader(Base):

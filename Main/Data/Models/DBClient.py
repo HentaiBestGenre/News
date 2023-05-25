@@ -2,7 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
 
-from .config import settings
+try:
+    from config import settings
+except:
+    from .config import settings
 
 
 def get_engine():

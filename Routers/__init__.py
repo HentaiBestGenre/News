@@ -1,0 +1,1 @@
+from .gamespot import router as gamespot_api 

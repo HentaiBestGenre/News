@@ -1,5 +1,6 @@
 from sqlalchemy import String, DateTime, Column, Integer
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import declarative_base
+
 # from sqlalchemy.ext.declarative import declarative_base
 
 from datetime import datetime
@@ -9,9 +10,7 @@ try:
 except:
     from .DBClient import get_engine
 
-class Base(DeclarativeBase):
-    pass
-
+Base = declarative_base()
 
 class ArticleHeader(Base):
     __tablename__ = "GamesSpotArticles"
@@ -22,7 +21,7 @@ class ArticleHeader(Base):
     image_url = Column(String(256))
     date = Column(DateTime)
 
-    def __init__(self, title, url, image_url, date):
+    def __init__(self, title, url, image_url, date) -> None:
         super().__init__()
         self.title = title
         self.url = url

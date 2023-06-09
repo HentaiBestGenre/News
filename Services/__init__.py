@@ -1,0 +1,1 @@
+from .GameSpot import Gamespot

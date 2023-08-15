@@ -19,36 +19,28 @@ spark_config = {
 
 @task
 def _last_article():
-    print("LOOKING FOR THE LAST ARTICLE")
     last_article = db['GameSpotHeaders'].find({}).sort('_id', pymongo.DESCENDING)[0]
-    print("THE LAST ACTICLE: ", last_article)
     return last_article
 
 @task
-def _parse_new(last_article: dict):
-    print("LOOKING FOR NEW ARTICLES")
-    isFound, page, res, last_index = False, 1, [], last_article['_id']
+def _parse_new(end: dict):
+    page, res = 1, []
 
-    while not isFound:
+    while page < 6:
         headers = requests.get(f"http://localhost:8000/parse/gamespot/get/headers/page/{page}", headers=HEADERS)
         if headers.status_code != 200:
-            print(f"ERROR with parsing article id - {i['_id']}:\n", json.loads(headers.content))
             raise Exception("request Error: ", json.loads(headers.content))
-        headers = json.loads(headers.content)
-        for i in headers:
-            print("HEADER INFO: ", i)
-            if i['title'] == last_article['title'] or i['url'] == last_article['url']:
-                isFound = True
-                break
-            res.insert(0, i)
+        headers: list = json.loads(headers.content)
+
+        coincidences = list(filter(lambda x: x['title'] == end['title'] or x['url'] == end['url'], headers))
+        if len(coincidences):
+            res = reversed(headers[:headers.index(coincidences[0])]) + res
+            break
+        else:
+            res = reversed(headers) + res
         page += 1
 
-    print("RESAULT: ")
-    for i in range(len(res)):
-        res[i]["_id"] = last_index + i + 1
-        print(f"№{i}:\t{res[i]}")
-    print("NUMBER OF ELEMENTS: ", len(res))
-
+    res = [{"_id": end['_id']+i+1, **v}for i, v in enumerate(res)]
     with open('/tmp/new_headers.json', 'w') as f:
         json.dump(res, f)
 

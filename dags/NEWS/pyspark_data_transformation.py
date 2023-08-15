@@ -9,6 +9,7 @@ from pyspark.ml import Pipeline
 from pyspark.ml import Transformer
 from pyspark.ml.param.shared import HasInputCol, HasOutputCol
 
+
 class SentTokenizer(Transformer, HasInputCol, HasOutputCol):
     def __init__(self, inputCol=None, outputCol=None):
         super(SentTokenizer, self).__init__()
